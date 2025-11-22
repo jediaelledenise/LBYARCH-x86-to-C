@@ -3,17 +3,17 @@
 ### Compile and Run
 Compile C version
 ```
-gcc -c -O2 CalculateDistance_c.c -o CalculateDistance_c.o
+gcc -c -O2 Kernel_C.c -o Kernel_C.o
 ```
 
 Compile x86-64 version
 ```
-nasm -f elf64 CalculateDistance_asm.asm -o CalculateDistance_asm.o
+nasm -f elf64 Kernel_ASM.asm -o Kernel_ASM.o
 ```
 
 Link
 ```
-gcc CalculateDistance_c.o CalculateDistance_asm.o -o runme -lm
+gcc Kernel_C.o Kernel_ASM.o -o runme -lm
 ```
 
 Run
