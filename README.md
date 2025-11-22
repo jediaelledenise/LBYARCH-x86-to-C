@@ -27,5 +27,9 @@ Run
 ./runme
 ```
 
-S
+```
+nasm -f win64 C:\Users\jedia\Downloads\test\Kernel_ASM.asm
+```
+
+```
 
