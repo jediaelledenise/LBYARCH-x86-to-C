@@ -12,6 +12,6 @@ gcc -O2 -c CalculateDistance_asm.asm
 ```
 
 ```
-gcc -O2 -o vecdist main.o CalculateDistance_c.o CalculateDistance_asm.o -lm
+gcc -O2 -o vecdist CalculateDistance_c.o CalculateDistance_asm.o -lm
 ```
 
