@@ -5,12 +5,12 @@ This repository contains two kernel implementations for calculating the Euclidea
 The project is designed to compare the execution time and performance efficiency of the compiler-optimized C code against manually optimized assembly code, particularly for large vector sizes.
 
 ### Comparative execution time and Analysis of the performance of the kernels
-| Vector size (n) | n(2^n) | C kernel time | ASM kernel time | Performance ratio (C/ASM) |
+| Vector size (n) | n(2^n) | C kernel time(sec) | ASM kernel time(sec) | Performance ratio (C/ASM) |
 | --------------- | ------ | ------------- | --------------- | ------------------------- |
-|     1048576     | 2^20 | 0.003870 | 0.001538 | ------------------------- |
-| --------------- | ------ | ------------- | --------------- | ------------------------- |
-| --------------- | ------ | ------------- | --------------- | ------------------------- |
-| --------------- | ------ | ------------- | --------------- | ------------------------- |
+| 1048576 | 2^20 | 0.003897 | 0.001708 | 2.28 |
+| 16777216 | 2^24 | 0.065454 | 0.023753 | 2.76 |
+| 1073741824 | 2^30 | failed | failed | failed |
+
 
 
 
