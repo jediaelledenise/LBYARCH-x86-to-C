@@ -60,16 +60,22 @@ void calculate_distance_c(int n, const float *X1, const float *X2,
 }
 
 int main() {
-    int test_sizes[] = {1 << 20, 1 << 24, 1 << 30};
+    // Try 2^30, fallback to 2^26 if it fails
+    int test_sizes[] = {1 << 20, 1 << 24, 1 << 30, 1 << 26};
     const int NUM_RUNS = 30;
+    int large_size_found = 0;
 
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 4; i++) {
+        // Skip 2^26 if 2^30 already succeeded
+        if (i == 3 && large_size_found) {
+            continue;
+        }
+
         int n = test_sizes[i];
         printf("\n============================================\n");
         printf("Vector size = %d elements (2^%d)\n", n, (int)round(log2(n)));
         printf("Running each kernel %d times...\n", NUM_RUNS);
 
-        // Allocate aligned memory
         float *X1 = (float *)ALLOC_ALIGNED(32, n * sizeof(float));
         float *X2 = (float *)ALLOC_ALIGNED(32, n * sizeof(float));
         float *Y1 = (float *)ALLOC_ALIGNED(32, n * sizeof(float));
@@ -78,13 +84,24 @@ int main() {
         float *Z_asm = (float *)ALLOC_ALIGNED(32, n * sizeof(float));
 
         if (!X1 || !X2 || !Y1 || !Y2 || !Z_c || !Z_asm) {
-            printf("Error: Memory allocation failed for N=%d. Skipping.\n", n);
+            printf("Error: Memory allocation failed for N=%d (2^%d).\n", n, (int)round(log2(n)));
+            
+            if (i == 2) {
+                printf("Attempting fallback to 2^26...\n");
+            } else {
+                printf("Skipping.\n");
+            }
+            
             FREE_ALIGNED(X1); FREE_ALIGNED(X2); FREE_ALIGNED(Y1);
             FREE_ALIGNED(Y2); FREE_ALIGNED(Z_c); FREE_ALIGNED(Z_asm);
             continue;
         }
 
-        // Initialize vectors
+        // Mark that we successfully allocated 2^30
+        if (i == 2) {
+            large_size_found = 1;
+        }
+
         srand(12345);
         init_vectors(n, X1, X2, Y1, Y2);
 
@@ -103,8 +120,6 @@ int main() {
         print_first_10(Z_c);
         printf("Average Time (30 runs): %.6f sec\n", avg_time_c);
 
-
-        
         // Time ASM kernel (30 runs)
         double total_time_asm = 0.0;
         for (int run = 0; run < NUM_RUNS; run++) {
@@ -120,17 +135,19 @@ int main() {
         print_first_10(Z_asm);
         printf("Average Time (30 runs): %.6f sec\n", avg_time_asm);
 
-        // Verify correctness
         printf("\n--- Correctness Check ---\n");
         printf("Result: %s\n", verify_results(n, Z_c, Z_asm) ? "PASS" : "FAIL");
 
-        // Performance summary
         printf("\n--- Performance Summary ---\n");
-        printf("C Kernel:   %.6f sec\n", avg_time_c);
-        printf("ASM Kernel: %.6f sec\n", avg_time_asm);
-        printf("Speedup:    %.2fx\n", avg_time_c / avg_time_asm);
+        printf("C Kernel:          %.6f sec\n", avg_time_c);
+        printf("ASM Kernel:        %.6f sec\n", avg_time_asm);
+        printf("Performance Ratio: %.2fx ", avg_time_c / avg_time_asm);
+        if (avg_time_c > avg_time_asm) {
+            printf("(ASM is %.2fx faster)\n", avg_time_c / avg_time_asm);
+        } else {
+            printf("(C is %.2fx faster)\n", avg_time_asm / avg_time_c);
+        }
 
-        // Free memory
         FREE_ALIGNED(X1); FREE_ALIGNED(X2); FREE_ALIGNED(Y1);
         FREE_ALIGNED(Y2); FREE_ALIGNED(Z_c); FREE_ALIGNED(Z_asm);
     }
