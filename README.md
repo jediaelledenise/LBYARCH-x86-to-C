@@ -3,15 +3,16 @@
 ### Compile
 Compile C version
 ```
-gcc -O2 -c CalculateDistance_c.c
+gcc -c -O2 CalculateDistance_c.c -o CalculateDistance_c.o
 ```
 
 Compile x86-64 version
 ```
-gcc -O2 -c CalculateDistance_asm.asm
+nasm -f elf64 CalculateDistance_asm.asm -o CalculationDistance_asm.o
 ```
 
+Link
 ```
-gcc -O2 -o vecdist CalculateDistance_c.o CalculateDistance_asm.o -lm
+gcc CalculateDistance_c.o CalculateDistance_asm.o -o runme -lm
 ```
 
