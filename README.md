@@ -7,9 +7,10 @@ The project is designed to compare the execution time and performance efficiency
 ### Comparative execution time and Analysis of the performance of the kernels
 | Vector size (n) | n(2^n) | C kernel time(sec) | ASM kernel time(sec) | Performance ratio (C/ASM) |
 | --------------- | ------ | ------------- | --------------- | ------------------------- |
-| 1048576 | 2^20 | 0.003897 | 0.001708 | 2.28 |
-| 16777216 | 2^24 | 0.065454 | 0.023753 | 2.76 |
+| 1048576 | 2^20 | 0.003770 | 0.001632 | 2.31 |
+| 16777216 | 2^24 | 0.065210 | 0.023944 | 2.72 |
 | 1073741824 | 2^30 | failed | failed | failed |
+| 67108864 | 2^26 | 253728 | 097378 | 2.61 |
 
 
 
