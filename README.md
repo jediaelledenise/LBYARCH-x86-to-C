@@ -15,9 +15,17 @@ Link
 ```
 gcc Kernel_C.o Kernel_ASM.o -o runme -lm
 ```
+Compile Summary
+```
+gcc -c -O2 Kernel_C.c -o Kernel_C.o
+nasm -f elf64 Kernel_ASM.asm -o Kernel_ASM.o
+gcc Kernel_C.o Kernel_ASM.o -o runme -lm
+```
 
 Run
 ```
 ./runme
 ```
+
+S
 
