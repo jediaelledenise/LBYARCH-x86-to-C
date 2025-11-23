@@ -18,6 +18,10 @@ The project is designed to compare the execution time and performance efficiency
 
 ### Compile and Run
 Use 'nasmpath' from downloaded NASM
+```
+@set path=C:\Users\<path>;%path%
+@%comspec%
+```
 
 Compile C version
 ```
