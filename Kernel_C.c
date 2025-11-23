@@ -136,7 +136,12 @@ int main() {
         printf("Average Time (30 runs): %.6f sec\n", avg_time_asm);
 
         printf("\n--- Correctness Check ---\n");
-        printf("Result: %s\n", verify_results(n, Z_c, Z_asm) ? "PASS" : "FAIL");
+        if (verify_results(n, Z_c, Z_asm)) {
+            printf("C Kernel output: CORRECT (reference)\n");
+            printf("x86-64 Kernel output: CORRECT (matches C)\n");
+        } else {
+            printf("x86-64 Kernel output: INCORRECT (does not match C)\n");
+        }
 
         printf("\n--- Performance Summary ---\n");
         printf("C Kernel:          %.6f sec\n", avg_time_c);
